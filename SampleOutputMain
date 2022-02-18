@@ -1,0 +1,42 @@
+PS C:\Users\asmud\go\bin\golang-redis> go run main.go
+2022/02/18 21:18:52 Received: {22.34601 87.23197}
+Request Count :  1
+Successfully added lat:22.34601, long:87.23197 for pincode: 721301 
+Success
+2022/02/18 21:18:53 Received: {19.7174 77.1494}
+Request Count :  2
+Successfully added lat:19.7174, long:77.1494 for pincode: 431513 
+Success
+2022/02/18 21:18:54 Received: {21.146633 79.08886}
+Request Count :  3
+Successfully added lat:21.146633, long:79.08886 for pincode: 440012 
+Success
+2022/02/18 21:18:55 Received: {19.1383 77.321}
+Request Count :  4
+Successfully added lat:19.1383, long:77.321 for pincode: 431600 
+Success
+2022/02/18 21:18:56 Received: {19.07609 72.877426}
+Request Count :  5
+Successfully added lat:19.07609, long:72.877426 for pincode: 400070 
+Success
+2022/02/18 21:18:56 Received: {19.717402 77.1494}
+Request Count :  6
+Success
+2022/02/18 21:18:57 Received: {22.34601 87.23197}
+Request Count :  7
+Success
+2022/02/18 21:18:57 Received: {19.7174 77.1494}
+Request Count :  8
+Success
+2022/02/18 21:18:57 Received: {21.146633 79.08886}
+Request Count :  9
+Success
+2022/02/18 21:18:58 Received: {19.1383 77.321}
+Request Count :  10
+Success
+2022/02/18 21:18:58 Received: {19.07609 72.877426}
+Request Count :  11
+Success
+2022/02/18 21:18:58 Received: {19.717402 77.1494}
+Request Count :  12
+Success
