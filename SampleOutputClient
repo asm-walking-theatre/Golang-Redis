@@ -1,0 +1,14 @@
+PS C:\Users\asmud\go\bin\golang-redis\client> go run client.go
+Response:  {"customer_latitude":22.34601,"customer_longitude":87.23197,"customer_pincode":721301}
+Response:  {"customer_latitude":19.7174,"customer_longitude":77.1494,"customer_pincode":431513}
+Response:  {"customer_latitude":21.146633,"customer_longitude":79.08886,"customer_pincode":440012}
+Response:  {"customer_latitude":19.1383,"customer_longitude":77.321,"customer_pincode":431600}
+Response:  {"customer_latitude":19.07609,"customer_longitude":72.877426,"customer_pincode":400070}
+Response:  {"customer_latitude":19.717402,"customer_longitude":77.1494,"customer_pincode":431513}
+Response:  {"customer_latitude":22.34601,"customer_longitude":87.23197,"customer_pincode":721301}
+Response:  {"customer_latitude":19.7174,"customer_longitude":77.1494,"customer_pincode":431513}
+Response:  {"customer_latitude":21.146633,"customer_longitude":79.08886,"customer_pincode":440012}
+Response:  {"customer_latitude":19.1383,"customer_longitude":77.321,"customer_pincode":431600}
+Response:  {"customer_latitude":19.07609,"customer_longitude":72.877426,"customer_pincode":400070}
+Response:  {"customer_latitude":19.717402,"customer_longitude":77.1494,"customer_pincode":431513}
+PS C:\Users\asmud\go\bin\golang-redis\client>
