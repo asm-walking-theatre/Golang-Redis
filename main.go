@@ -18,14 +18,19 @@ type Address struct {
 	Pincode   int     `json:"customer_pincode"`
 }
 
+// Struct to receive data from client
 type loc struct {
 	Lat float32 `json: lat`
 	Lon float32 `json: lon`
 }
 
+// To Keep Request count
 var Request_Count int = 1
+
+// Pincode versioning system adds versions to pincode
 var PincodeVersionMap = make(map[int]int)
 
+//Checks and returns the pincode is 1 Km Proximity of the request
 func ResponseFromRedis(lat, long *float32) int {
 
 	conn, err := redis.Dial("tcp", "localhost:6379")
@@ -51,7 +56,8 @@ func ResponseFromRedis(lat, long *float32) int {
 	return result_int
 }
 
-func AddToRedis(lat, long *float32, pincode int) error {
+//Adds to redis database
+func AddToRedis(lat, long *float32, pincode int) {
 	conn, err := redis.Dial("tcp", "localhost:6379")
 	checkError(err, "Error in connecting to Redis")
 	defer conn.Close()
@@ -60,6 +66,7 @@ func AddToRedis(lat, long *float32, pincode int) error {
 	PincodeVersionMap[pincode]++
 
 	reply, err := conn.Do("GEOADD", "maps", *long, *lat, pincode_v)
+	checkError(err, "Error in adding Latitude and lonngitude")
 
 	var CheckAdded int64 = 1
 
@@ -68,10 +75,22 @@ func AddToRedis(lat, long *float32, pincode int) error {
 	} else {
 		fmt.Printf("new type of error")
 	}
-
-	return err
 }
 
+// Need to flush the previous redis structure at reuqest no. 1
+func FlushallInRedis() {
+	conn, err := redis.Dial("tcp", "localhost:6379")
+	checkError(err, "Error in flushall at redis")
+	defer conn.Close()
+	var i int = 5
+	reply, err := conn.Do("FLUSHALL")
+	if i == 3 {
+		fmt.Println("Cant leave reply from redis", reply)
+	}
+	checkError(err, "Error in flushall at redis")
+}
+
+// error check function with string output
 func checkError(err error, response string) {
 	if err != nil {
 		panic(err)
@@ -79,6 +98,8 @@ func checkError(err error, response string) {
 	}
 }
 
+
+// Calling Openstreet maps API, parse the content and get only pincode and returns it
 func RequestToGoogleMapsAPI(lat, long *float32) int {
 
 	var myurl string = "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + fmt.Sprintf("%v", *lat) + "&lon=" + fmt.Sprintf("%v", *long)
@@ -101,6 +122,8 @@ func RequestToGoogleMapsAPI(lat, long *float32) int {
 	return pincode_int
 }
 
+
+// Functionn to handle customer requests
 func CustomerHandler(w http.ResponseWriter, r *http.Request) {
 
 	location := loc{}
@@ -155,18 +178,8 @@ func CustomerHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func FlushallInRedis() {
-	conn, err := redis.Dial("tcp", "localhost:6379")
-	checkError(err, "Error in flushall at redis")
-	defer conn.Close()
-	var i int = 5
-	reply, err := conn.Do("FLUSHALL")
-	if i == 3 {
-		fmt.Println("Cant leave reply from redis", reply)
-	}
-	checkError(err, "Error in flushall at redis")
-}
 
+//Server
 func main() {
 	http.HandleFunc("/", CustomerHandler)
 	http.ListenAndServe(":8080", nil)
