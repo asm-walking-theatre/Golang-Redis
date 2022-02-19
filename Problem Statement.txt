@@ -1,0 +1,14 @@
+Golang - Problem statement
+
+At citymall we are using a mapping service, lets say google maps or open street maps for reverse geo location i.e from lat,lng of a user get his address. 
+From his full address we are mainly using pin code, and not the actual address. So for us pincode is only important.Since we are getting a huge amount of 
+traffic we cannot always use maps api, as there is always a cost associated with calling the map api. So we need to start caching data. Since citymall is 
+operating in fixed amount cities, we can ideally build our own internal database of lat,lng to pincode mapping. This way we don't need to always call 
+map api and we can reduce costs over time.
+
+
+Proposed solution
+1. Store lat, lng of user to his pincode in redis. https://redis.io/commands/GEOHASH
+2. Define a threshold, lets say 1km inside which we assume that pincode won't change.
+3. When we want to rev geo code, we first check if we have pin code already available in redis cache and we simply show user pin code from our cache. 
+Using this function https://redis.io/commands/georadius
