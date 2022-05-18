@@ -18,8 +18,8 @@ type Address struct {
 }
 
 type loc struct {
-	Lat float32 `json: lat`
-	Lon float32 `json: lon`
+	Lat float32 `json: "lat"`
+	Lon float32 `json: "lon"`
 }
 
 func client(lat, lon float32) {

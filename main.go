@@ -20,8 +20,8 @@ type Address struct {
 
 // Struct to receive data from client
 type loc struct {
-	Lat float32 `json: lat`
-	Lon float32 `json: lon`
+	Lat float32 `json: "lat"`
+	Lon float32 `json: "lon"`
 }
 
 // To Keep Request count
@@ -30,7 +30,7 @@ var Request_Count int = 1
 // Pincode versioning system adds versions to pincode
 var PincodeVersionMap = make(map[int]int)
 
-//Checks and returns the pincode is 1 Km Proximity of the request
+//Checks and returns the pincode in 1 Km Proximity of the request
 func ResponseFromRedis(lat, long *float32) int {
 
 	conn, err := redis.Dial("tcp", "localhost:6379")
@@ -82,22 +82,19 @@ func FlushallInRedis() {
 	conn, err := redis.Dial("tcp", "localhost:6379")
 	checkError(err, "Error in flushall at redis")
 	defer conn.Close()
-	var i int = 5
-	reply, err := conn.Do("FLUSHALL")
-	if i == 3 {
-		fmt.Println("Cant leave reply from redis", reply)
-	}
-	checkError(err, "Error in flushall at redis")
+	_, err1 := conn.Do("FLUSHALL")
+
+	checkError(err1, "Error in flushall at redis")
 }
 
 // error check function with string output
 func checkError(err error, response string) {
 	if err != nil {
-		panic(err)
-		fmt.Println(response)
+		//panic(err)
+		fmt.Printf("%v", err)
+		fmt.Printf("%v", response)
 	}
 }
-
 
 // Calling Openstreet maps API, parse the content and get only pincode and returns it
 func RequestToGoogleMapsAPI(lat, long *float32) int {
@@ -121,7 +118,6 @@ func RequestToGoogleMapsAPI(lat, long *float32) int {
 
 	return pincode_int
 }
-
 
 // Functionn to handle customer requests
 func CustomerHandler(w http.ResponseWriter, r *http.Request) {
@@ -170,14 +166,13 @@ func CustomerHandler(w http.ResponseWriter, r *http.Request) {
 
 	customerAddressJson, err := json.Marshal(customerAddress)
 	if err != nil {
-		fmt.Fprintf(w, "Error: converting to JSOn %s", err)
+		fmt.Fprintf(w, "Error: converting to JSON %s", err)
 	}
 	fmt.Println("Success")
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(customerAddressJson)
 
 }
-
 
 //Server
 func main() {
